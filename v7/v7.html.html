@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cash & Payment Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 45%; margin: 10px; float:left; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background: #f2f2f2; }
+    input { width: 80px; text-align: center; }
+    .total { font-weight: bold; background: #e6ffe6; }
+    #loginScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+    #mainContent { display: none; }
+    .clearfix::after { content: ""; display: table; clear: both; }
+  </style>
+</head>
+<body>
+  <!-- 登录界面 -->
+  <div id="loginScreen">
+    <h2>请输入密码进入系统</h2>
+    <input type="password" id="passwordInput" placeholder="Password">
+    <button onclick="checkPassword()">Login</button>
+    <p id="errorMsg" style="color:red;"></p>
+  </div>
+
+  <!-- 主页面内容 -->
+  <div id="mainContent">
+    <h2>Cash, Card & Bank Transfer Calculator</h2>
+
+    <div class="clearfix">
+      <!-- 现金表格 -->
+      <table>
+        <tr>
+          <th>Cash</th>
+          <th>Items</th>
+          <th>Total</th>
+        </tr>
+        <tbody id="cashTable">
+          <tr><td>$100.00</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$50.00</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$20.00</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$10.00</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$5.00</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$2.00</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$1.00</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$0.50</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$0.20</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$0.10</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+          <tr><td>$0.05</td><td><input type="number" min="0" value="0" onchange="calculate()"></td><td class="cashTotal"></td></tr>
+        </tbody>
+        <tr class="total"><td colspan="2">Cash Total</td><td id="cashSum">$0.00</td></tr>
+      </table>
+
+      <!-- 转账表格 -->
+      <table>
+        <tr>
+          <th>Transfer No.</th>
+          <th>Amount</th>
+        </tr>
+        <tbody id="btTable">
+          <tr><td>1</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>2</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>3</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>4</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>5</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>6</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>7</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>8</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>9</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>10</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+          <tr><td>11</td><td><input type="number" min="0" value="0" step="0.01" onchange="calculate()"></td></tr>
+        </tbody>
+        <tr class="total"><td>BT Total</td><td id="btSum">$0.00</td></tr>
+      </table>
+    </div>
+
+        <div style="clear:both; margin-top:30px;">
+      <h3>Summary</h3>
+      <table style="width:50%; border-collapse: collapse;">
+        <tr>
+          <th>Type</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td>Cash</td>
+          <td id="summaryCash">$0.00</td>
+        </tr>
+        <tr>
+          <td>Bank Transfer</td>
+          <td id="summaryBT">$0.00</td>
+        </tr>
+        <tr>
+          <td>Card</td>
+          <td><input type="number" id="cardInput" value="0" step="0.01" onchange="calculate()"></td>
+        </tr>
+        <tr class="total">
+          <td>C+C+BT Total</td>
+          <td id="calcTotal">$0.00</td>
+        </tr>
+        <tr>
+          <td>Sales Total</td>
+          <td><input type="number" id="salesInput" value="0" step="0.01" onchange="calculate()"></td>
+        </tr>
+        <tr class="total">
+          <td>Sales Total - Total</td>
+          <td id="difference">$0.00</td>
+        </tr>
+      </table>
+    </div>
+
+
+  <script>
+    const cashValues = [100,50,20,10,5,2,1,0.5,0.2,0.1,0.05];
+
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      if (input === "emma1234") {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      } else {
+        document.getElementById("errorMsg").innerText = "密码错误，请重试";
+      }
+    }
+
+    function calculate() {
+      let cashSum = 0, btSum = 0;
+      // 现金计算
+      const cashRows = document.querySelectorAll("#cashTable tr");
+      cashRows.forEach((row, i) => {
+        const qty = row.querySelector("input").value;
+        const total = qty * cashValues[i];
+        row.querySelector(".cashTotal").innerText = total ? "$" + total.toFixed(2) : "$-";
+        cashSum += total;
+      });
+      // 转账计算
+      const btRows = document.querySelectorAll("#btTable tr");
+      btRows.forEach(row => {
+        const val = parseFloat(row.querySelector("input").value) || 0;
+        btSum += val;
+      });
+      // 卡计算
+      const cardVal = parseFloat(document.getElementById("cardInput").value) || 0;
+
+      // 更新结果
+      document.getElementById("cashSum").innerText = "$" + cashSum.toFixed(2);
+      document.getElementById("btSum").innerText = "$" + btSum.toFixed(2);
+      document.getElementById("summaryCash").innerText = "$" + cashSum.toFixed(2);
+      document.getElementById("summaryBT").innerText = "$" + btSum.toFixed(2);
+
+      const calcTotal = cashSum + btSum + cardVal;
+      document.getElementById("calcTotal").innerText = "$" + calcTotal.toFixed(2);
+
+      // 销售总额
+      const salesTotal = parseFloat(document.getElementById("salesInput").value) || 0;
+      const diff = calcTotal - salesTotal;
+      document.getElementById("difference").innerText = "$" + diff.toFixed(2);
+    }
+
+    calculate();
+  </script>
+ <p style="margin-top:20px; color:gray; font-size:14px;">
+        注意：如果是负数就是少钱。
+    </p>
+</body>
+</html>
